@@ -71,12 +71,45 @@ const buildElementsOnScreen = (movies) => {
     movie_overview.innerHTML = overview;
     movie.append(movie_overview);
 
-    const movie_favorite_btn = document.createElement("button");
-    movie_favorite_btn.innerText = "Adicionar aos favoritos";
-    movie_favorite_btn.setAttribute("class", "btn-default add-to-favorites");
-    movie.append(movie_favorite_btn);
+    const user_action = document.createElement("div");
+    user_action.setAttribute("class", "user_action");
 
+    const add_to_favorite_btn = document.createElement("button");
+    add_to_favorite_btn.setAttribute("class", "movie_about__btn btn-default");
+    add_to_favorite_btn.setAttribute("id", `btn_card_add_fav_${id}`);
+    add_to_favorite_btn.setAttribute("title", "Adicionar aos meus favoritos");
+    add_to_favorite_btn.innerHTML = "<i class='ph ph-heart' style='color: white; font-size: 24px'></i>";
+    add_to_favorite_btn.onclick = () => addToFavorites(id);
+
+    const remove_from_favorite_btn = document.createElement("button");
+    remove_from_favorite_btn.setAttribute("class", "movie_about__btn btn-default");
+    remove_from_favorite_btn.setAttribute("id", `btn_card_remove_fav_${id}`);
+    remove_from_favorite_btn.setAttribute("title", "Nos meus favoritos");
+    remove_from_favorite_btn.innerHTML ="<i class='ph-fill ph-heart' style='color: white; font-size: 24px'></i>";
+    remove_from_favorite_btn.onclick = () => removeFromFavorites(id);
+
+    const add_to_must_watch_btn = document.createElement("button");
+    add_to_must_watch_btn.setAttribute("class", "movie_about__btn btn-default");
+    add_to_must_watch_btn.setAttribute("id", `btn_card_add_must_watch_${id}`);
+    add_to_must_watch_btn.setAttribute("title", "Na minha lista para assistir");
+    add_to_must_watch_btn.innerHTML = "<i class='ph ph-plus' style='color: white; font-size: 24px'></i>";
+    add_to_must_watch_btn.onclick = () => addToMustWatch(id);
+
+    const remove_from_must_watch_btn = document.createElement("button");
+    remove_from_must_watch_btn.setAttribute("class", "movie_about__btn btn-default");
+    remove_from_must_watch_btn.setAttribute("id", `btn_card_remove_must_watch_${id}`);
+    remove_from_must_watch_btn.setAttribute("title", "Remover da lista para assistir");
+    remove_from_must_watch_btn.innerHTML = "<i class='ph ph-check' style='color: white; font-size: 24px'></i>";
+    remove_from_must_watch_btn.onclick = () => removeFromMustWatch(id);
+
+    user_action.append(add_to_favorite_btn);
+    user_action.append(remove_from_favorite_btn);
+    user_action.append(add_to_must_watch_btn);
+    user_action.append(remove_from_must_watch_btn);
+
+    movie.append(user_action);
     movie_list.append(movie);
+    toggleButtons(id)
   }
 };
 
@@ -85,8 +118,6 @@ const removeElementsFromMain = () => {
     movie_list.removeChild(movie_list.firstChild);
   }
 };
-
-getMoviesList();
 
 const selectedMovie = (id, backdrop, title, overview) => {
   document.body.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${backdrop})`;
@@ -128,19 +159,51 @@ const removeFromMustWatch = (id = movie_id) => {
 };
 
 const toggleButtons = (id) => {
+  console.log(id)
+  const user_action = document.querySelector(".user_action");
+
+  const card_add_fav = document.querySelector(`#btn_card_add_fav_${id}`);
+  const card_remove_fav = document.querySelector(`#btn_card_remove_fav_${id}`);
+  const card_add_must_watch = document.querySelector(`#btn_card_add_must_watch_${id}`);
+  const card_remove_must_watch = document.querySelector(`#btn_card_remove_must_watch_${id}`);
+
   if (favoritesList.includes(id)) {
+    console.log('Está nos favoritos')
     addToFavoritesBtn.style.display = "none";
     removeFromFavoritesBtn.style.display = "block";
+
+    if (user_action) {
+      card_add_fav.style.display = "none";
+      card_remove_fav.style.display = "block";
+    }
   } else {
+    console.log('Não está nos favoritos')
     addToFavoritesBtn.style.display = "block";
     removeFromFavoritesBtn.style.display = "none";
+
+    if (user_action) {
+      card_add_fav.style.display = "block";
+      card_remove_fav.style.display = "none";
+    }
   }
 
   if (mustWatchList.includes(id)) {
+    console.log('Está para assistir')
     addToMustWatchBtn.style.display = "none";
     removeFromMustWatchBtn.style.display = "block";
+    if (user_action) {
+      card_add_must_watch.style.display = "none";
+      card_remove_must_watch.style.display = "block";
+    }
   } else {
+    console.log('Não está para assistir')
     addToMustWatchBtn.style.display = "block";
     removeFromMustWatchBtn.style.display = "none";
+    if (user_action) {
+      card_add_must_watch.style.display = "block";
+      card_remove_must_watch.style.display = "none";
+    }
   }
 };
+
+getMoviesList();
