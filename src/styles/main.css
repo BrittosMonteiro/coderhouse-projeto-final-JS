@@ -81,9 +81,12 @@ body,
   display: none;
 }
 .nav {
-  display: none;
+  display: flex;
+  flex-wrap: wrap;
   max-width: 1280px;
   margin: 0 auto;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .btn-default {
@@ -165,11 +168,14 @@ body,
   justify-content: center;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (width >= 768px) {
   .form_search,
   .fav_link,
   .nav {
     display: flex;
+  }
+  .nav{
+    justify-content: start;
   }
   .movie_list {
     flex-direction: row;
@@ -177,7 +183,7 @@ body,
     justify-content: space-evenly;
     padding: initial;
   }
-  .user_action,
+  
   #menu-icon {
     display: none;
   }
@@ -201,7 +207,8 @@ body,
 
   .movie_overview,
   .movie_title,
-  .add-to-favorites {
+  .add-to-favorites, 
+  .user_action {
     display: none;
   }
 
