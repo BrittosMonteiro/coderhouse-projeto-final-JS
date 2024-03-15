@@ -25,32 +25,47 @@
   <body>
     <main class="main" id="main">
       <header class="header">
-        <!-- <i class="ph ph-magnifying-glass" style="color: white"></i>
-        <i class="ph ph-list" style="color: white"></i>
-        <div>
-          <a href="./pages/favorites/favorites.html">
-            <i class="ph-fill ph-heart" style="color: white"></i>
-          </a>
-
-          <a href="./pages/profile/profile.html">
-            <i class="ph ph-user-circle" style="color: white"></i>
-          </a>
-        </div> -->
+        <p class="user_logged">Olá, visitante</p>
+        <form class="form_search">
+          <input
+            type="text"
+            class="search_text"
+            placeholder="Pesquisar filme"
+          />
+          <i class="ph ph-magnifying-glass" style="color: white"></i>
+        </form>
+        <a href="./pages/favorites/favorites.html" class="fav_link">
+          <i class="ph-fill ph-heart" style="color: white"></i>
+        </a>
+        <i class="ph ph-list" id="menu-icon" style="color: white"></i>
       </header>
       <nav class="nav">
         <button
           onclick="getMoviesList('popular')"
-          class="btn-default btn-selected"
+          class="btn-default"
+          id="popular"
         >
           Populares
         </button>
-        <button onclick="getMoviesList('top_rated')" class="btn-default">
+        <button
+          onclick="getMoviesList('top_rated')"
+          class="btn-default"
+          id="top_rated"
+        >
           Melhores avaliados
         </button>
-        <button onclick="getMoviesList('now_playing')" class="btn-default">
+        <button
+          onclick="getMoviesList('now_playing')"
+          class="btn-default"
+          id="now_playing"
+        >
           Em cartaz
         </button>
-        <button onclick="getMoviesList('upcoming')" class="btn-default">
+        <button
+          onclick="getMoviesList('upcoming')"
+          class="btn-default"
+          id="upcoming"
+        >
           Em breve
         </button>
       </nav>
@@ -71,10 +86,7 @@
           title="Na lista dos meus favoritos"
           id="remove_from_favorites"
         >
-          <i
-            class="ph-fill ph-heart"
-            style="color: white; font-size: 24px"
-          ></i>
+          <i class="ph-fill ph-heart" style="color: white; font-size: 24px"></i>
         </button>
         <button
           class="movie_about__btn btn-default"

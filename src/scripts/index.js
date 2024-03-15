@@ -7,6 +7,14 @@ const addToFavoritesBtn = document.querySelector("#add_to_favorites");
 const removeFromFavoritesBtn = document.querySelector("#remove_from_favorites");
 const addToMustWatchBtn = document.querySelector("#add_to_watch");
 const removeFromMustWatchBtn = document.querySelector("#remove_from_watch");
+
+const btnPopular = document.getElementById("popular");
+const btnTopRated = document.getElementById("top_rated");
+const btnPlaying = document.getElementById("now_playing");
+const btnUpcoming = document.getElementById("upcoming");
+
+const navButtons = [btnPlaying, btnPopular, btnTopRated, btnUpcoming];
+
 let movie_id = null;
 let favoritesList = JSON.parse(localStorage.getItem("favoritesList")) ?? [];
 let mustWatchList = JSON.parse(localStorage.getItem("mustWatchList")) ?? [];
@@ -21,6 +29,12 @@ const options = {
 };
 
 const getMoviesList = (listType = "popular") => {
+  for (let btn of navButtons) {
+    btn.classList.remove("btn-selected");
+  }
+
+  setButtonStyle(listType);
+
   fetch(
     `https://api.themoviedb.org/3/movie/${listType}?language=pt-BR&page=1`,
     options
@@ -78,28 +92,44 @@ const buildElementsOnScreen = (movies) => {
     add_to_favorite_btn.setAttribute("class", "movie_about__btn btn-default");
     add_to_favorite_btn.setAttribute("id", `btn_card_add_fav_${id}`);
     add_to_favorite_btn.setAttribute("title", "Adicionar aos meus favoritos");
-    add_to_favorite_btn.innerHTML = "<i class='ph ph-heart' style='color: white; font-size: 24px'></i>";
+    add_to_favorite_btn.innerHTML =
+      "<i class='ph ph-heart' style='color: white; font-size: 24px'></i>";
     add_to_favorite_btn.onclick = () => addToFavorites(id);
 
     const remove_from_favorite_btn = document.createElement("button");
-    remove_from_favorite_btn.setAttribute("class", "movie_about__btn btn-default");
+    remove_from_favorite_btn.setAttribute(
+      "class",
+      "movie_about__btn btn-default"
+    );
     remove_from_favorite_btn.setAttribute("id", `btn_card_remove_fav_${id}`);
     remove_from_favorite_btn.setAttribute("title", "Nos meus favoritos");
-    remove_from_favorite_btn.innerHTML ="<i class='ph-fill ph-heart' style='color: white; font-size: 24px'></i>";
+    remove_from_favorite_btn.innerHTML =
+      "<i class='ph-fill ph-heart' style='color: white; font-size: 24px'></i>";
     remove_from_favorite_btn.onclick = () => removeFromFavorites(id);
 
     const add_to_must_watch_btn = document.createElement("button");
     add_to_must_watch_btn.setAttribute("class", "movie_about__btn btn-default");
     add_to_must_watch_btn.setAttribute("id", `btn_card_add_must_watch_${id}`);
     add_to_must_watch_btn.setAttribute("title", "Na minha lista para assistir");
-    add_to_must_watch_btn.innerHTML = "<i class='ph ph-plus' style='color: white; font-size: 24px'></i>";
+    add_to_must_watch_btn.innerHTML =
+      "<i class='ph ph-plus' style='color: white; font-size: 24px'></i>";
     add_to_must_watch_btn.onclick = () => addToMustWatch(id);
 
     const remove_from_must_watch_btn = document.createElement("button");
-    remove_from_must_watch_btn.setAttribute("class", "movie_about__btn btn-default");
-    remove_from_must_watch_btn.setAttribute("id", `btn_card_remove_must_watch_${id}`);
-    remove_from_must_watch_btn.setAttribute("title", "Remover da lista para assistir");
-    remove_from_must_watch_btn.innerHTML = "<i class='ph ph-check' style='color: white; font-size: 24px'></i>";
+    remove_from_must_watch_btn.setAttribute(
+      "class",
+      "movie_about__btn btn-default"
+    );
+    remove_from_must_watch_btn.setAttribute(
+      "id",
+      `btn_card_remove_must_watch_${id}`
+    );
+    remove_from_must_watch_btn.setAttribute(
+      "title",
+      "Remover da lista para assistir"
+    );
+    remove_from_must_watch_btn.innerHTML =
+      "<i class='ph ph-check' style='color: white; font-size: 24px'></i>";
     remove_from_must_watch_btn.onclick = () => removeFromMustWatch(id);
 
     user_action.append(add_to_favorite_btn);
@@ -109,7 +139,7 @@ const buildElementsOnScreen = (movies) => {
 
     movie.append(user_action);
     movie_list.append(movie);
-    toggleButtons(id)
+    toggleButtons(id);
   }
 };
 
@@ -159,16 +189,20 @@ const removeFromMustWatch = (id = movie_id) => {
 };
 
 const toggleButtons = (id) => {
-  console.log(id)
+  console.log(id);
   const user_action = document.querySelector(".user_action");
 
   const card_add_fav = document.querySelector(`#btn_card_add_fav_${id}`);
   const card_remove_fav = document.querySelector(`#btn_card_remove_fav_${id}`);
-  const card_add_must_watch = document.querySelector(`#btn_card_add_must_watch_${id}`);
-  const card_remove_must_watch = document.querySelector(`#btn_card_remove_must_watch_${id}`);
+  const card_add_must_watch = document.querySelector(
+    `#btn_card_add_must_watch_${id}`
+  );
+  const card_remove_must_watch = document.querySelector(
+    `#btn_card_remove_must_watch_${id}`
+  );
 
   if (favoritesList.includes(id)) {
-    console.log('Está nos favoritos')
+    console.log("Está nos favoritos");
     addToFavoritesBtn.style.display = "none";
     removeFromFavoritesBtn.style.display = "block";
 
@@ -177,7 +211,7 @@ const toggleButtons = (id) => {
       card_remove_fav.style.display = "block";
     }
   } else {
-    console.log('Não está nos favoritos')
+    console.log("Não está nos favoritos");
     addToFavoritesBtn.style.display = "block";
     removeFromFavoritesBtn.style.display = "none";
 
@@ -188,7 +222,7 @@ const toggleButtons = (id) => {
   }
 
   if (mustWatchList.includes(id)) {
-    console.log('Está para assistir')
+    console.log("Está para assistir");
     addToMustWatchBtn.style.display = "none";
     removeFromMustWatchBtn.style.display = "block";
     if (user_action) {
@@ -196,13 +230,30 @@ const toggleButtons = (id) => {
       card_remove_must_watch.style.display = "block";
     }
   } else {
-    console.log('Não está para assistir')
+    console.log("Não está para assistir");
     addToMustWatchBtn.style.display = "block";
     removeFromMustWatchBtn.style.display = "none";
     if (user_action) {
       card_add_must_watch.style.display = "block";
       card_remove_must_watch.style.display = "none";
     }
+  }
+};
+
+const setButtonStyle = (type) => {
+  switch (type) {
+    case "popular":
+      btnPopular.classList.add("btn-selected");
+      break;
+    case "top_rated":
+      btnTopRated.classList.add("btn-selected");
+      break;
+    case "now_playing":
+      btnPlaying.classList.add("btn-selected");
+      break;
+    case "upcoming":
+      btnUpcoming.classList.add("btn-selected");
+      break;
   }
 };
 
