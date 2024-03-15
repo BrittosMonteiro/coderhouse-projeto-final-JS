@@ -1,4 +1,5 @@
 @import "./reset.css";
+
 html {
   height: 100%;
 }
@@ -33,6 +34,15 @@ body,
 }
 .header {
   backdrop-filter: blur(10px);
+  justify-content: space-between;
+}
+.header i{
+  font-size: 24px;
+  cursor: pointer;
+}
+.header div{
+  display: flex;
+  gap: 16px;
 }
 .nav {
   display: none;
