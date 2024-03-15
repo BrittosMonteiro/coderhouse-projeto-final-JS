@@ -14,25 +14,86 @@
       type="text/css"
       href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/style.css"
     />
-    <link rel="stylesheet" href="./src/styles/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/styles/main.css" />
   </head>
   <body>
     <main class="main" id="main">
       <header class="header">
-        <i class="ph ph-list" style="color: white;"></i>
+        <i class="ph ph-magnifying-glass" style="color: white"></i>
+        <i class="ph ph-list" style="color: white"></i>
         <div>
-          <i class="ph-fill ph-heart" style="color: white;"></i>
-          <i class="ph ph-user-circle" style="color: white;"></i>
+          <a href="./pages/favorites/favorites.html">
+            <i class="ph-fill ph-heart" style="color: white"></i>
+          </a>
+
+          <a href="./pages/profile/profile.html">
+            <i class="ph ph-user-circle" style="color: white"></i>
+          </a>
         </div>
       </header>
       <nav class="nav">
-        <button onclick="getMoviesList('popular')" class="btn-default btn-selected">Populares</button>
-        <button onclick="getMoviesList('top_rated')" class="btn-default">Melhores avaliados</button>
-        <button onclick="getMoviesList('now_playing')" class="btn-default">Em cartaz</button>
-        <button onclick="getMoviesList('upcoming')" class="btn-default">Em breve</button>
+        <button
+          onclick="getMoviesList('popular')"
+          class="btn-default btn-selected"
+        >
+          Populares
+        </button>
+        <button onclick="getMoviesList('top_rated')" class="btn-default">
+          Melhores avaliados
+        </button>
+        <button onclick="getMoviesList('now_playing')" class="btn-default">
+          Em cartaz
+        </button>
+        <button onclick="getMoviesList('upcoming')" class="btn-default">
+          Em breve
+        </button>
       </nav>
-      <section class="movie_list">
+      <section class="movie_about">
+        <h1 class="movie_about__title"></h1>
+        <p class="movie_about__description"></p>
+        <button
+          class="movie_about__btn btn-default"
+          onclick="addToFavorites()"
+          title="Adicionar aos meus favoritos"
+          id="add_to_favorites"
+        >
+          <i class="ph ph-thumbs-up" style="color: white; font-size: 24px"></i>
+        </button>
+        <button
+          class="movie_about__btn btn-default"
+          onclick="removeFromFavorites()"
+          title="Na lista dos meus favoritos"
+          id="remove_from_favorites"
+        >
+          <i
+            class="ph-fill ph-thumbs-up"
+            style="color: white; font-size: 24px"
+          ></i>
+        </button>
+        <button
+          class="movie_about__btn btn-default"
+          onclick="addToMustWatch()"
+          title="Quero assistir"
+          id="add_to_watch"
+        >
+          <i class="ph ph-plus" style="color: white; font-size: 24px"></i>
+        </button>
+        <button
+          class="movie_about__btn btn-default"
+          onclick="removeFromMustWatch()"
+          title="Não assisti"
+          id="remove_from_watch"
+        >
+          <i class="ph ph-check" style="color: white; font-size: 24px"></i>
+        </button>
       </section>
+      <section class="movie_list"></section>
       <footer class="footer"></footer>
     </main>
     <script src="./src/scripts/index.js"></script>

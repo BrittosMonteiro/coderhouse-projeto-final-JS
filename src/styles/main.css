@@ -10,6 +10,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-color: black;
+  background-attachment: fixed;
 }
 
 body,
@@ -21,7 +22,7 @@ body,
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 24px;
+  gap: 40px;
 }
 
 .header,
@@ -39,11 +40,11 @@ body,
   top: 0;
   z-index: 1;
 }
-.header i{
+.header i {
   font-size: 24px;
   cursor: pointer;
 }
-.header div{
+.header div {
   display: flex;
   gap: 16px;
 }
@@ -66,6 +67,33 @@ body,
   border: 1px solid #f4f8fc;
 }
 
+.movie_about {
+  display: none;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 24px;
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  color: white;
+}
+
+.movie_about__description {
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  display: -webkit-box;
+  height: 5.2em;
+  line-height: 1.3em;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .movie_list {
   display: flex;
   flex-direction: column;
@@ -82,9 +110,9 @@ body,
   flex-direction: column;
   width: 100%;
   max-width: 350px;
-  padding: 16px;
+  padding: 8px;
   backdrop-filter: blur(10px);
-  border-radius: 8px;
+  border-radius: 4px;
   color: #f4f8fc;
   gap: 16px;
 }
@@ -116,5 +144,26 @@ body,
 @media screen and (min-width: 1024px) {
   .movie_list {
     justify-content: space-between;
+  }
+
+  .movie {
+    width: 200px;
+    height: 200px;
+  }
+
+  .movie img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .movie_overview,
+  .movie_title,
+  .add-to-favorites {
+    display: none;
+  }
+
+  .movie_about {
+    display: flex;
   }
 }
