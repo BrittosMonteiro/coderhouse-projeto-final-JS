@@ -9,81 +9,9 @@ const options = {
   },
 };
 
-// fetch(
-//   "https://api.themoviedb.org/3/movie/popular?language=pt-BR&page=1",
-//   options
-// )
-//   .then((response) => response.json())
-//   .then((response) => {
-//     const movies = response.results.slice(0, 9);
-//     const body = document.body;
-//     body.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${movies[0].backdrop_path})`;
-
-//     const movie_list = document.querySelector(".movie_list");
-
-//     for (let single_movie in movies) {
-//       const { backdrop_path, id, overview, poster_path, title } =
-//         movies[single_movie];
-//       const movie = document.createElement("div");
-//       movie.setAttribute("class", "movie");
-//       movie.onclick = () =>
-//         (body.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${backdrop_path})`);
-
-//       const img = document.createElement("img");
-//       img.setAttribute("class", "");
-
-//       movie_list.append(movie);
-//     }
-//   })
-//   .catch((err) => console.error(err));
-
-const changeCoverMovie = (movies, id) => {
-  console.log("bateu");
-};
-
-const getPopularMovies = () => {
+const getMoviesList = (listType = "popular") => {
   fetch(
-    "https://api.themoviedb.org/3/movie/popular?language=pt-BR&page=1",
-    options
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      const movies = response.results.slice(0, 12);
-      buildElementsOnScreen(movies);
-    })
-    .catch((err) => console.log(err));
-};
-
-const getTopRatedMovies = () => {
-  fetch(
-    "https://api.themoviedb.org/3/movie/top_rated?language=pt-BR&page=1",
-    options
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      const movies = response.results.slice(0, 12);
-      console.log(movies);
-      buildElementsOnScreen(movies);
-    })
-    .catch((err) => console.log(err));
-};
-
-const getPlayingNow = () => {
-  fetch(
-    "https://api.themoviedb.org/3/movie/now_playing?language=pt-BR&page=1",
-    options
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      const movies = response.results.slice(0, 12);
-      buildElementsOnScreen(movies);
-    })
-    .catch((err) => console.log(err));
-};
-
-const getUpcomingMovies = () => {
-  fetch(
-    "https://api.themoviedb.org/3/movie/upcoming?language=pt-BR&page=1",
+    `https://api.themoviedb.org/3/movie/${listType}?language=pt-BR&page=1`,
     options
   )
     .then((response) => response.json())
@@ -140,4 +68,4 @@ const removeElementsFromMain = () => {
   }
 };
 
-getPopularMovies();
+getMoviesList();

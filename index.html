@@ -9,19 +9,25 @@
       type="text/css"
       href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/style.css"
+    />
     <link rel="stylesheet" href="./src/styles/main.css">
   </head>
   <body>
     <main class="main" id="main">
       <header class="header">
-        <i class="ph ph-user-circle" style="color: black;"></i>
-        <i class="ph ph-list" style="color: black;"></i>
+        <i class="ph ph-user-circle" style="color: white;"></i>
+        <i class="ph ph-list" style="color: white;"></i>
+        <i class="ph-fill ph-heart" style="color: white;"></i>
       </header>
       <nav class="nav">
-        <button onclick="getPopularMovies()" class="btn-default btn-selected">Populares</button>
-        <button onclick="getTopRatedMovies()" class="btn-default">Melhores avaliados</button>
-        <button onclick="getPlayingNow()" class="btn-default">Em cartaz</button>
-        <button onclick="getUpcomingMovies()" class="btn-default">Em breve</button>
+        <button onclick="getMoviesList('popular')" class="btn-default btn-selected">Populares</button>
+        <button onclick="getMoviesList('top_rated')" class="btn-default">Melhores avaliados</button>
+        <button onclick="getMoviesList('now_playing')" class="btn-default">Em cartaz</button>
+        <button onclick="getMoviesList('upcoming')" class="btn-default">Em breve</button>
       </nav>
       <section class="movie_list">
       </section>
