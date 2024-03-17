@@ -29,6 +29,8 @@ let movie_id = null;
 let favoritesList = JSON.parse(localStorage.getItem("favoritesList")) ?? [];
 let mustWatchList = JSON.parse(localStorage.getItem("mustWatchList")) ?? [];
 
+const loadingScreen = document.querySelector(".loading");
+
 const options = {
   method: "GET",
   headers: {
@@ -40,7 +42,7 @@ const options = {
 
 const getMoviesList = (type = "popular") => {
   handleButtons(type);
-
+  loadingScreen.style.display = "flex";
   fetch(
     `https://api.themoviedb.org/3/movie/${type}?language=pt-BR&page=1`,
     options
@@ -50,7 +52,10 @@ const getMoviesList = (type = "popular") => {
       const movies = response.results.slice(0, 12);
       buildElementsOnScreen(movies);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(() => {
+      loadingScreen.style.display = "none";
+    });
 };
 
 const buildElementsOnScreen = (movies) => {
@@ -242,9 +247,10 @@ const toggleButtons = (id) => {
 
 const handleFavoritesOrMustWatchMovies = async (type) => {
   if (!type) return;
-  
+
+  loadingScreen.style.display = 'flex'
   handleButtons(type);
-  
+
   if (type == "favorites") {
     var list = favoritesList;
   } else {
@@ -260,6 +266,8 @@ const handleFavoritesOrMustWatchMovies = async (type) => {
     const response = await movie.json();
     movieList.push(response);
   }
+
+  loadingScreen.style.display = 'none'
 
   if (movieList.length > 0) buildElementsOnScreen(movieList);
 };
@@ -284,11 +292,15 @@ const handleSearchMovie = (event) => {
 const searchMovie = async (search_text) => {
   if (!search_text) return;
 
+  loadingScreen.style.display = 'flex'
+
   const search = await fetch(
     `https://api.themoviedb.org/3/search/movie?query=${search_text}&include_adult=false&language=pt-BR&page=1`,
     options
   );
   const response = await search.json();
+
+  loadingScreen.style.display = 'none'
   buildElementsOnScreen(response.results);
 };
 
@@ -303,29 +315,29 @@ const handleButtons = (selected) => {
   switch (selected) {
     case "popular":
       btnPopular.classList.add("btn-selected");
-      clearSearchText()
+      clearSearchText();
       break;
     case "top_rated":
       btnTopRated.classList.add("btn-selected");
-      clearSearchText()
+      clearSearchText();
       break;
     case "now_playing":
       btnPlaying.classList.add("btn-selected");
-      clearSearchText()
+      clearSearchText();
       break;
     case "upcoming":
       btnUpcoming.classList.add("btn-selected");
-      clearSearchText()
+      clearSearchText();
       break;
     case "favorites":
       btnFavorites.classList.add("btn-selected");
       btnFavorites.style.display = "flex";
-      clearSearchText()
+      clearSearchText();
       break;
     case "must_watch":
       btnMustWatch.classList.add("btn-selected");
       btnMustWatch.style.display = "flex";
-      clearSearchText()
+      clearSearchText();
       break;
     case "btn_search_movie":
       btnSearchMovie.classList.add("btn-selected");
