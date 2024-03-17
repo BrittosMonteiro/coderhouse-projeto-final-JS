@@ -15,3 +15,10 @@ a {
 button {
   background-color: transparent;
 }
+
+.d-none {
+  display: none;
+}
+.d-flex{
+  display: flex;
+}

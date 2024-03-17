@@ -53,7 +53,7 @@
             onclick="handleFavoritesOrMustWatchMovies('must_watch')"
           ></i>
         </div>
-        <i class="ph ph-list" id="menu-icon" style="color: white"></i>
+        <i class="ph ph-list" id="menu-icon" style="color: white" onclick="openMenu()"></i>
       </header>
       <nav class="nav">
         <button
@@ -154,6 +154,38 @@
       </footer>
       <div class="loading">
         <div class="spinner"></div>
+      </div>
+      <div class="dropdown d-none" id="dropdown__menu">
+        <i
+          class="ph ph-x dropdown__close"
+          style="color: white; font-size: 24px"
+          onclick="closeMenu()"
+        ></i>
+        <div class="dropdown__search" method="GET">
+          <input
+            type="text"
+            class="search_text"
+            id="search_text"
+            name="search_text"
+            placeholder="Pesquisar filme"
+            onkeypress="handleSearchMovie(event)"
+          />
+          <i class="ph ph-magnifying-glass" style="color: white"></i>
+        </div>
+        <hr />
+        <div class="dropdown_option" onclick="handleFavoritesOrMustWatchMovies('favorites')">
+          <i
+            class="ph-fill ph-heart"
+            style="font-size: 24px"
+          ></i>
+          <span>Meus favoritos</span>
+        </div>
+        <div class="dropdown_option"  onclick="handleFavoritesOrMustWatchMovies('must_watch')">
+          <i
+            class="ph ph-list-checks"
+            style="font-size: 24px"
+          ></i>
+          <span>Quero assistir</span>
       </div>
     </main>
     <script src="./src/scripts/index.js"></script>

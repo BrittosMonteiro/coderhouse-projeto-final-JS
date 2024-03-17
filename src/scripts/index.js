@@ -30,6 +30,8 @@ let favoritesList = JSON.parse(localStorage.getItem("favoritesList")) ?? [];
 let mustWatchList = JSON.parse(localStorage.getItem("mustWatchList")) ?? [];
 
 const loadingScreen = document.querySelector(".loading");
+const btnMenuIcon = document.getElementById('menu-icon')
+const dropdownMenu = document.getElementById('dropdown__menu')
 
 const options = {
   method: "GET",
@@ -247,6 +249,7 @@ const toggleButtons = (id) => {
 
 const handleFavoritesOrMustWatchMovies = async (type) => {
   if (!type) return;
+  closeMenu()
 
   loadingScreen.style.display = 'flex'
   handleButtons(type);
@@ -352,4 +355,17 @@ const clearSearchText = () => {
   document.getElementById("search_text").value = null;
 };
 
+const openMenu = () => {
+  dropdownMenu.classList.remove('d-none')
+  dropdownMenu.classList.add('d-flex')
+}
+
+const closeMenu = () => {
+  dropdownMenu.classList.add('d-none')
+  dropdownMenu.classList.remove('d-flex')
+}
+
 getMoviesList();
+
+// tratar possíveis retornos vazios das listas de favoritos e quero assistir
+// menu suspenso (dropdownMenu) para mobile: busca

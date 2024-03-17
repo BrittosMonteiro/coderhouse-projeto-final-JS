@@ -55,11 +55,6 @@ body,
   cursor: pointer;
 }
 
-.header div {
-  display: flex;
-  gap: 16px;
-}
-
 .form_search {
   display: none;
   flex-direction: row;
@@ -73,21 +68,25 @@ body,
   font-weight: 600;
   font-size: 16px;
 }
+
 .search_text::placeholder {
   font-size: 14px;
   color: #f4f8fc;
   font-weight: 500;
 }
+
 .fav_link {
   display: none;
+  gap: 16px;
 }
+
 .nav {
   display: flex;
   flex-wrap: wrap;
   max-width: 1280px;
   margin: 0 auto;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
 }
 
 .btn-default {
@@ -204,6 +203,49 @@ body,
   animation: spin 1s infinite 0s;
 }
 
+.dropdown {
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 16px;
+  z-index: 1;
+  backdrop-filter: blur(100px);
+  gap: 16px;
+}
+
+.dropdown__close {
+  cursor: pointer;
+  align-self: end;
+}
+
+.dropdown__search {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+
+.dropdown__search input {
+  width: 100%;
+}
+
+.dropdown_option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+hr {
+  width: 100%;
+  display: flex;
+  height: 1px;
+  background-color: #f4f8fc;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -213,7 +255,7 @@ body,
   }
 }
 
-@media screen and (width >= 768px) {
+@media screen and (min-width: 768px) {
   .form_search,
   .fav_link,
   .nav {
