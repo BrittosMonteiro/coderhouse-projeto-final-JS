@@ -26,16 +26,17 @@
     <main class="main" id="main">
       <header class="header">
         <p class="user_logged">Olá, visitante</p>
-        <form class="form_search" action="./index.html" method="GET">
+        <div class="form_search" method="GET">
           <input
             type="text"
             class="search_text"
             id="search_text"
             name="search_text"
             placeholder="Pesquisar filme"
+            onkeypress="handleSearchMovie(event)"
           />
           <i class="ph ph-magnifying-glass" style="color: white"></i>
-        </form>
+        </div>
         <div class="fav_link">
           <i
             class="ph-fill ph-heart"
@@ -93,6 +94,14 @@
         </button>
         <button class="btn-default btn-selected" id="must_watch">
           Quero assistir
+          <i
+            class="ph ph-x"
+            style="color: white; font-size: 16px"
+            onclick="removeFavoritesAndMustWatch()"
+          ></i>
+        </button>
+        <button class="btn-default btn-selected" id="btn_search_movie">
+          <span></span>
           <i
             class="ph ph-x"
             style="color: white; font-size: 16px"

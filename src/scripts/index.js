@@ -1,5 +1,3 @@
-const search_movie = window.location.search.split("=")[1];
-
 const btnDisplayFavorites = document.getElementById("btn_display_favorites");
 const btnDisplayMustWatch = document.getElementById("btn_display_must_watch");
 
@@ -9,6 +7,7 @@ const btnPlaying = document.getElementById("now_playing");
 const btnUpcoming = document.getElementById("upcoming");
 const btnFavorites = document.getElementById("favorites");
 const btnMustWatch = document.getElementById("must_watch");
+const btnSearchMovie = document.getElementById("btn_search_movie");
 
 btnFavorites.style.display = "none";
 btnMustWatch.style.display = "none";
@@ -252,9 +251,15 @@ const setButtonStyle = (type) => {
     btn.classList.remove("btn-selected");
   }
 
-  if (type != "favorites" && type != "must_watch") {
+  if (
+    type != "favorites" &&
+    type != "must_watch" &&
+    type != "btn_search_movie"
+  ) {
     btnFavorites.style.display = "none";
     btnMustWatch.style.display = "none";
+    btnSearchMovie.style.display = "none";
+    document.getElementById("search_text").value = null;
   }
 
   switch (type) {
@@ -276,6 +281,8 @@ const setButtonStyle = (type) => {
     case "must_watch":
       btnMustWatch.classList.add("btn-selected");
       break;
+    default:
+      break;
   }
 };
 
@@ -286,9 +293,11 @@ const displayFavoritesOrMustWatch = (type) => {
   if (type == "favorites") {
     btnFavorites.style.display = "flex";
     btnMustWatch.style.display = "none";
+    btnSearchMovie.style.display = "none";
   } else {
     btnFavorites.style.display = "none";
     btnMustWatch.style.display = "flex";
+    btnSearchMovie.style.display = "none";
   }
 
   handleFavoritesOrMustWatchMovies(type);
@@ -308,15 +317,39 @@ const handleFavoritesOrMustWatchMovies = async (type) => {
       `https://api.themoviedb.org/3/movie/${id_movie}?language=pt-BR`,
       options
     );
-    const response = await movie.json()
-    movieList.push(response)
+    const response = await movie.json();
+    movieList.push(response);
   }
 
-  if(movieList.length > 0) buildElementsOnScreen(movieList)
+  if (movieList.length > 0) buildElementsOnScreen(movieList);
 };
 
 const removeFavoritesAndMustWatch = () => {
+  document.getElementById("search_text").value = null;
   getMoviesList();
+};
+
+const handleSearchMovie = (event) => {
+  const search_text = document.getElementById("search_text").value;
+
+  if (!(event.keyCode === 13) || !search_text) return;
+
+  btnSearchMovie.style.display = "flex";
+  const btnSpan = document.querySelector('#btn_search_movie span')
+  btnSpan.innerText = search_text
+  setButtonStyle("btn_search_movie");
+  searchMovie(search_text);
+};
+
+const searchMovie = async (search_text) => {
+  if (!search_text) return;
+
+  const search = await fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${search_text}&include_adult=false&language=pt-BR&page=1`,
+    options
+  );
+  const response = await search.json();
+  buildElementsOnScreen(response.results);
 };
 
 getMoviesList();
