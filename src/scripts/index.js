@@ -1,3 +1,18 @@
+const search_movie = window.location.search.split("=")[1];
+
+const btnDisplayFavorites = document.getElementById("btn_display_favorites");
+const btnDisplayMustWatch = document.getElementById("btn_display_must_watch");
+
+const btnPopular = document.getElementById("popular");
+const btnTopRated = document.getElementById("top_rated");
+const btnPlaying = document.getElementById("now_playing");
+const btnUpcoming = document.getElementById("upcoming");
+const btnFavorites = document.getElementById("favorites");
+const btnMustWatch = document.getElementById("must_watch");
+
+btnFavorites.style.display = "none";
+btnMustWatch.style.display = "none";
+
 const movie_list = document.querySelector(".movie_list");
 const movie_about__description = document.querySelector(
   ".movie_about__description"
@@ -8,12 +23,14 @@ const removeFromFavoritesBtn = document.querySelector("#remove_from_favorites");
 const addToMustWatchBtn = document.querySelector("#add_to_watch");
 const removeFromMustWatchBtn = document.querySelector("#remove_from_watch");
 
-const btnPopular = document.getElementById("popular");
-const btnTopRated = document.getElementById("top_rated");
-const btnPlaying = document.getElementById("now_playing");
-const btnUpcoming = document.getElementById("upcoming");
-
-const navButtons = [btnPlaying, btnPopular, btnTopRated, btnUpcoming];
+const navButtons = [
+  btnPlaying,
+  btnPopular,
+  btnTopRated,
+  btnUpcoming,
+  btnFavorites,
+  btnMustWatch,
+];
 
 let movie_id = null;
 let favoritesList = JSON.parse(localStorage.getItem("favoritesList")) ?? [];
@@ -28,15 +45,11 @@ const options = {
   },
 };
 
-const getMoviesList = (listType = "popular") => {
-  for (let btn of navButtons) {
-    btn.classList.remove("btn-selected");
-  }
-
-  setButtonStyle(listType);
+const getMoviesList = (type = "popular") => {
+  setButtonStyle(type);
 
   fetch(
-    `https://api.themoviedb.org/3/movie/${listType}?language=pt-BR&page=1`,
+    `https://api.themoviedb.org/3/movie/${type}?language=pt-BR&page=1`,
     options
   )
     .then((response) => response.json())
@@ -49,6 +62,8 @@ const getMoviesList = (listType = "popular") => {
 
 const buildElementsOnScreen = (movies) => {
   removeElementsFromMain();
+
+  // console.log(movies);
 
   selectedMovie(
     movies[0].id,
@@ -110,9 +125,9 @@ const buildElementsOnScreen = (movies) => {
     const add_to_must_watch_btn = document.createElement("button");
     add_to_must_watch_btn.setAttribute("class", "movie_about__btn btn-default");
     add_to_must_watch_btn.setAttribute("id", `btn_card_add_must_watch_${id}`);
-    add_to_must_watch_btn.setAttribute("title", "Na minha lista para assistir");
+    add_to_must_watch_btn.setAttribute("title", "Adicionar para assistir");
     add_to_must_watch_btn.innerHTML =
-      "<i class='ph ph-plus' style='color: white; font-size: 24px'></i>";
+      "<i class='ph ph-list-plus' style='color: white; font-size: 24px'></i>";
     add_to_must_watch_btn.onclick = () => addToMustWatch(id);
 
     const remove_from_must_watch_btn = document.createElement("button");
@@ -124,12 +139,9 @@ const buildElementsOnScreen = (movies) => {
       "id",
       `btn_card_remove_must_watch_${id}`
     );
-    remove_from_must_watch_btn.setAttribute(
-      "title",
-      "Remover da lista para assistir"
-    );
+    remove_from_must_watch_btn.setAttribute("title", "Na lista para assistir");
     remove_from_must_watch_btn.innerHTML =
-      "<i class='ph ph-check' style='color: white; font-size: 24px'></i>";
+      "<i class='ph ph-list-checks' style='color: white; font-size: 24px'></i>";
     remove_from_must_watch_btn.onclick = () => removeFromMustWatch(id);
 
     user_action.append(add_to_favorite_btn);
@@ -189,7 +201,6 @@ const removeFromMustWatch = (id = movie_id) => {
 };
 
 const toggleButtons = (id) => {
-  console.log(id);
   const user_action = document.querySelector(".user_action");
 
   const card_add_fav = document.querySelector(`#btn_card_add_fav_${id}`);
@@ -202,7 +213,6 @@ const toggleButtons = (id) => {
   );
 
   if (favoritesList.includes(id)) {
-    console.log("Está nos favoritos");
     addToFavoritesBtn.style.display = "none";
     removeFromFavoritesBtn.style.display = "block";
 
@@ -211,7 +221,6 @@ const toggleButtons = (id) => {
       card_remove_fav.style.display = "block";
     }
   } else {
-    console.log("Não está nos favoritos");
     addToFavoritesBtn.style.display = "block";
     removeFromFavoritesBtn.style.display = "none";
 
@@ -222,7 +231,6 @@ const toggleButtons = (id) => {
   }
 
   if (mustWatchList.includes(id)) {
-    console.log("Está para assistir");
     addToMustWatchBtn.style.display = "none";
     removeFromMustWatchBtn.style.display = "block";
     if (user_action) {
@@ -230,7 +238,6 @@ const toggleButtons = (id) => {
       card_remove_must_watch.style.display = "block";
     }
   } else {
-    console.log("Não está para assistir");
     addToMustWatchBtn.style.display = "block";
     removeFromMustWatchBtn.style.display = "none";
     if (user_action) {
@@ -241,6 +248,15 @@ const toggleButtons = (id) => {
 };
 
 const setButtonStyle = (type) => {
+  for (let btn of navButtons) {
+    btn.classList.remove("btn-selected");
+  }
+
+  if (type != "favorites" && type != "must_watch") {
+    btnFavorites.style.display = "none";
+    btnMustWatch.style.display = "none";
+  }
+
   switch (type) {
     case "popular":
       btnPopular.classList.add("btn-selected");
@@ -254,7 +270,53 @@ const setButtonStyle = (type) => {
     case "upcoming":
       btnUpcoming.classList.add("btn-selected");
       break;
+    case "favorites":
+      btnFavorites.classList.add("btn-selected");
+      break;
+    case "must_watch":
+      btnMustWatch.classList.add("btn-selected");
+      break;
   }
+};
+
+const displayFavoritesOrMustWatch = (type) => {
+  if (!type) return;
+
+  setButtonStyle(type);
+  if (type == "favorites") {
+    btnFavorites.style.display = "flex";
+    btnMustWatch.style.display = "none";
+  } else {
+    btnFavorites.style.display = "none";
+    btnMustWatch.style.display = "flex";
+  }
+
+  handleFavoritesOrMustWatchMovies(type);
+};
+
+const handleFavoritesOrMustWatchMovies = async (type) => {
+  if (!type) return;
+  if (type == "favorites") {
+    var list = favoritesList;
+  } else {
+    list = mustWatchList;
+  }
+
+  let movieList = [];
+  for (let id_movie of list) {
+    const movie = await fetch(
+      `https://api.themoviedb.org/3/movie/${id_movie}?language=pt-BR`,
+      options
+    );
+    const response = await movie.json()
+    movieList.push(response)
+  }
+
+  if(movieList.length > 0) buildElementsOnScreen(movieList)
+};
+
+const removeFavoritesAndMustWatch = () => {
+  getMoviesList();
 };
 
 getMoviesList();

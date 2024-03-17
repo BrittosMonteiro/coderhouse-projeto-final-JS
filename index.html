@@ -26,17 +26,32 @@
     <main class="main" id="main">
       <header class="header">
         <p class="user_logged">Olá, visitante</p>
-        <form class="form_search">
+        <form class="form_search" action="./index.html" method="GET">
           <input
             type="text"
             class="search_text"
+            id="search_text"
+            name="search_text"
             placeholder="Pesquisar filme"
           />
           <i class="ph ph-magnifying-glass" style="color: white"></i>
         </form>
-        <a href="./pages/favorites/favorites.html" class="fav_link">
-          <i class="ph-fill ph-heart" style="color: white"></i>
-        </a>
+        <div class="fav_link">
+          <i
+            class="ph-fill ph-heart"
+            style="color: white"
+            title="Meus favoritos"
+            id="btn_display_favorites"
+            onclick="displayFavoritesOrMustWatch('favorites')"
+          ></i>
+          <i
+            class="ph ph-list-checks"
+            style="color: white"
+            title="Quero assistir"
+            id="btn_display_must_watch"
+            onclick="displayFavoritesOrMustWatch('must_watch')"
+          ></i>
+        </div>
         <i class="ph ph-list" id="menu-icon" style="color: white"></i>
       </header>
       <nav class="nav">
@@ -68,6 +83,22 @@
         >
           Em breve
         </button>
+        <button class="btn-default btn-selected" id="favorites">
+          Favoritos
+          <i
+            class="ph ph-x"
+            style="color: white; font-size: 16px"
+            onclick="removeFavoritesAndMustWatch()"
+          ></i>
+        </button>
+        <button class="btn-default btn-selected" id="must_watch">
+          Quero assistir
+          <i
+            class="ph ph-x"
+            style="color: white; font-size: 16px"
+            onclick="removeFavoritesAndMustWatch()"
+          ></i>
+        </button>
       </nav>
       <section class="movie_about">
         <h1 class="movie_about__title"></h1>
@@ -83,7 +114,7 @@
         <button
           class="movie_about__btn btn-default"
           onclick="removeFromFavorites()"
-          title="Na lista dos meus favoritos"
+          title="Nos meus favoritos"
           id="remove_from_favorites"
         >
           <i class="ph-fill ph-heart" style="color: white; font-size: 24px"></i>
@@ -94,19 +125,24 @@
           title="Quero assistir"
           id="add_to_watch"
         >
-          <i class="ph ph-plus" style="color: white; font-size: 24px"></i>
+          <i class="ph ph-list-plus" style="color: white; font-size: 24px"></i>
         </button>
         <button
           class="movie_about__btn btn-default"
           onclick="removeFromMustWatch()"
-          title="Não assisti"
+          title="Na lista para assistir"
           id="remove_from_watch"
         >
-          <i class="ph ph-check" style="color: white; font-size: 24px"></i>
+          <i
+            class="ph ph-list-checks"
+            style="color: white; font-size: 24px"
+          ></i>
         </button>
       </section>
       <section class="movie_list"></section>
-      <footer class="footer"></footer>
+      <footer class="footer">
+        <p>Projeto Final Javascript - Desenvolvido por Lucas Brittos</p>
+      </footer>
     </main>
     <script src="./src/scripts/index.js"></script>
   </body>
