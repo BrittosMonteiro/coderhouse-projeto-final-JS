@@ -22,14 +22,8 @@ const removeFromFavoritesBtn = document.querySelector("#remove_from_favorites");
 const addToMustWatchBtn = document.querySelector("#add_to_watch");
 const removeFromMustWatchBtn = document.querySelector("#remove_from_watch");
 
-const navButtons = [
-  btnPlaying,
-  btnPopular,
-  btnTopRated,
-  btnUpcoming,
-  btnFavorites,
-  btnMustWatch,
-];
+const navButtons = [btnPlaying, btnPopular, btnTopRated, btnUpcoming];
+const specialButtons = [btnFavorites, btnMustWatch, btnSearchMovie];
 
 let movie_id = null;
 let favoritesList = JSON.parse(localStorage.getItem("favoritesList")) ?? [];
@@ -45,7 +39,7 @@ const options = {
 };
 
 const getMoviesList = (type = "popular") => {
-  setButtonStyle(type);
+  handleButtons(type);
 
   fetch(
     `https://api.themoviedb.org/3/movie/${type}?language=pt-BR&page=1`,
@@ -246,65 +240,11 @@ const toggleButtons = (id) => {
   }
 };
 
-const setButtonStyle = (type) => {
-  for (let btn of navButtons) {
-    btn.classList.remove("btn-selected");
-  }
-
-  if (
-    type != "favorites" &&
-    type != "must_watch" &&
-    type != "btn_search_movie"
-  ) {
-    btnFavorites.style.display = "none";
-    btnMustWatch.style.display = "none";
-    btnSearchMovie.style.display = "none";
-    document.getElementById("search_text").value = null;
-  }
-
-  switch (type) {
-    case "popular":
-      btnPopular.classList.add("btn-selected");
-      break;
-    case "top_rated":
-      btnTopRated.classList.add("btn-selected");
-      break;
-    case "now_playing":
-      btnPlaying.classList.add("btn-selected");
-      break;
-    case "upcoming":
-      btnUpcoming.classList.add("btn-selected");
-      break;
-    case "favorites":
-      btnFavorites.classList.add("btn-selected");
-      break;
-    case "must_watch":
-      btnMustWatch.classList.add("btn-selected");
-      break;
-    default:
-      break;
-  }
-};
-
-const displayFavoritesOrMustWatch = (type) => {
-  if (!type) return;
-
-  setButtonStyle(type);
-  if (type == "favorites") {
-    btnFavorites.style.display = "flex";
-    btnMustWatch.style.display = "none";
-    btnSearchMovie.style.display = "none";
-  } else {
-    btnFavorites.style.display = "none";
-    btnMustWatch.style.display = "flex";
-    btnSearchMovie.style.display = "none";
-  }
-
-  handleFavoritesOrMustWatchMovies(type);
-};
-
 const handleFavoritesOrMustWatchMovies = async (type) => {
   if (!type) return;
+  
+  handleButtons(type);
+  
   if (type == "favorites") {
     var list = favoritesList;
   } else {
@@ -324,7 +264,7 @@ const handleFavoritesOrMustWatchMovies = async (type) => {
   if (movieList.length > 0) buildElementsOnScreen(movieList);
 };
 
-const removeFavoritesAndMustWatch = () => {
+const restart = () => {
   document.getElementById("search_text").value = null;
   getMoviesList();
 };
@@ -335,9 +275,9 @@ const handleSearchMovie = (event) => {
   if (!(event.keyCode === 13) || !search_text) return;
 
   btnSearchMovie.style.display = "flex";
-  const btnSpan = document.querySelector('#btn_search_movie span')
-  btnSpan.innerText = search_text
-  setButtonStyle("btn_search_movie");
+  const btnSpan = document.querySelector("#btn_search_movie span");
+  btnSpan.innerText = search_text;
+  handleButtons("btn_search_movie");
   searchMovie(search_text);
 };
 
@@ -350,6 +290,54 @@ const searchMovie = async (search_text) => {
   );
   const response = await search.json();
   buildElementsOnScreen(response.results);
+};
+
+const handleButtons = (selected) => {
+  for (let button of navButtons) {
+    button.classList.remove("btn-selected");
+  }
+  for (let button of specialButtons) {
+    button.style.display = "none";
+  }
+
+  switch (selected) {
+    case "popular":
+      btnPopular.classList.add("btn-selected");
+      clearSearchText()
+      break;
+    case "top_rated":
+      btnTopRated.classList.add("btn-selected");
+      clearSearchText()
+      break;
+    case "now_playing":
+      btnPlaying.classList.add("btn-selected");
+      clearSearchText()
+      break;
+    case "upcoming":
+      btnUpcoming.classList.add("btn-selected");
+      clearSearchText()
+      break;
+    case "favorites":
+      btnFavorites.classList.add("btn-selected");
+      btnFavorites.style.display = "flex";
+      clearSearchText()
+      break;
+    case "must_watch":
+      btnMustWatch.classList.add("btn-selected");
+      btnMustWatch.style.display = "flex";
+      clearSearchText()
+      break;
+    case "btn_search_movie":
+      btnSearchMovie.classList.add("btn-selected");
+      btnSearchMovie.style.display = "flex";
+      break;
+    default:
+      break;
+  }
+};
+
+const clearSearchText = () => {
+  document.getElementById("search_text").value = null;
 };
 
 getMoviesList();

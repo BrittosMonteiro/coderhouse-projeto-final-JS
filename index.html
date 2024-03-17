@@ -43,14 +43,14 @@
             style="color: white"
             title="Meus favoritos"
             id="btn_display_favorites"
-            onclick="displayFavoritesOrMustWatch('favorites')"
+            onclick="handleFavoritesOrMustWatchMovies('favorites')"
           ></i>
           <i
             class="ph ph-list-checks"
             style="color: white"
             title="Quero assistir"
             id="btn_display_must_watch"
-            onclick="displayFavoritesOrMustWatch('must_watch')"
+            onclick="handleFavoritesOrMustWatchMovies('must_watch')"
           ></i>
         </div>
         <i class="ph ph-list" id="menu-icon" style="color: white"></i>
@@ -89,7 +89,7 @@
           <i
             class="ph ph-x"
             style="color: white; font-size: 16px"
-            onclick="removeFavoritesAndMustWatch()"
+            onclick="restart()"
           ></i>
         </button>
         <button class="btn-default btn-selected" id="must_watch">
@@ -97,7 +97,7 @@
           <i
             class="ph ph-x"
             style="color: white; font-size: 16px"
-            onclick="removeFavoritesAndMustWatch()"
+            onclick="restart()"
           ></i>
         </button>
         <button class="btn-default btn-selected" id="btn_search_movie">
@@ -105,7 +105,7 @@
           <i
             class="ph ph-x"
             style="color: white; font-size: 16px"
-            onclick="removeFavoritesAndMustWatch()"
+            onclick="restart()"
           ></i>
         </button>
       </nav>
