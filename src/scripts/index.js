@@ -9,9 +9,7 @@ const btnFavorites = document.getElementById("favorites");
 const btnMustWatch = document.getElementById("must_watch");
 const btnSearchMovie = document.getElementById("btn_search_movie");
 
-btnFavorites.style.display = "none";
-btnMustWatch.style.display = "none";
-
+const movie_about = document.querySelector(".movie_about");
 const movie_list = document.querySelector(".movie_list");
 const movie_about__description = document.querySelector(
   ".movie_about__description"
@@ -21,6 +19,7 @@ const addToFavoritesBtn = document.querySelector("#add_to_favorites");
 const removeFromFavoritesBtn = document.querySelector("#remove_from_favorites");
 const addToMustWatchBtn = document.querySelector("#add_to_watch");
 const removeFromMustWatchBtn = document.querySelector("#remove_from_watch");
+const no_data = document.querySelector(".no-data");
 
 const navButtons = [btnPlaying, btnPopular, btnTopRated, btnUpcoming];
 const specialButtons = [btnFavorites, btnMustWatch, btnSearchMovie];
@@ -30,8 +29,8 @@ let favoritesList = JSON.parse(localStorage.getItem("favoritesList")) ?? [];
 let mustWatchList = JSON.parse(localStorage.getItem("mustWatchList")) ?? [];
 
 const loadingScreen = document.querySelector(".loading");
-const btnMenuIcon = document.getElementById('menu-icon')
-const dropdownMenu = document.getElementById('dropdown__menu')
+const btnMenuIcon = document.getElementById("menu-icon");
+const dropdownMenu = document.getElementById("dropdown__menu");
 
 const options = {
   method: "GET",
@@ -42,34 +41,45 @@ const options = {
   },
 };
 
-const getMoviesList = (type = "popular") => {
+const getMoviesList = async (type = "popular") => {
   handleButtons(type);
-  loadingScreen.style.display = "flex";
-  fetch(
+
+  loadingScreen.classList.add("d-flex");
+  loadingScreen.classList.remove("d-none");
+
+  const movies = await fetch(
     `https://api.themoviedb.org/3/movie/${type}?language=pt-BR&page=1`,
     options
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      const movies = response.results.slice(0, 12);
-      buildElementsOnScreen(movies);
-    })
-    .catch((err) => console.log(err))
-    .finally(() => {
-      loadingScreen.style.display = "none";
-    });
+  );
+  const response = await movies.json();
+
+  buildElementsOnScreen(response.results.slice(0, 12));
+
+  loadingScreen.classList.add("d-none");
+  loadingScreen.classList.remove("d-flex");
 };
 
 const buildElementsOnScreen = (movies) => {
   removeElementsFromMain();
 
-  // console.log(movies);
+  if (movies.length > 0) {
+    movie_list.style.display = "flex";
+    movie_about.style.display = "flex"
+    no_data.classList.remove("d-flex");
+    no_data.classList.add("d-none");
+  } else {
+    no_data.classList.remove("d-none");
+    no_data.classList.add("d-flex");
+    movie_list.style.display = "none";
+    movie_about.style.display = "none"
+    return
+  }
 
   selectedMovie(
-    movies[0].id,
-    movies[0].backdrop_path,
-    movies[0].title,
-    movies[0].overview
+    movies[0]?.id,
+    movies[0]?.backdrop_path,
+    movies[0]?.title,
+    movies[0]?.overview
   );
 
   for (let single_movie in movies) {
@@ -162,7 +172,13 @@ const removeElementsFromMain = () => {
 };
 
 const selectedMovie = (id, backdrop, title, overview) => {
-  document.body.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${backdrop})`;
+  backdrop &&
+    (document.body.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${backdrop})`);
+  if (!title && !overview) {
+    movie_about.style.display = "none";
+    return;
+  }
+  movie_about.style.display = "flex";
   movie_about__title.innerHTML = title;
   movie_about__description.innerText = overview;
   movie_id = id;
@@ -249,9 +265,11 @@ const toggleButtons = (id) => {
 
 const handleFavoritesOrMustWatchMovies = async (type) => {
   if (!type) return;
-  closeMenu()
+  closeMenu();
 
-  loadingScreen.style.display = 'flex'
+  loadingScreen.classList.add("d-flex");
+  loadingScreen.classList.remove("d-none");
+
   handleButtons(type);
 
   if (type == "favorites") {
@@ -270,37 +288,38 @@ const handleFavoritesOrMustWatchMovies = async (type) => {
     movieList.push(response);
   }
 
-  loadingScreen.style.display = 'none'
+  buildElementsOnScreen(movieList);
 
-  if (movieList.length > 0) buildElementsOnScreen(movieList);
+  loadingScreen.classList.add("d-none");
+  loadingScreen.classList.remove("d-flex");
 };
 
 const restart = () => {
-  clearSearchText()
+  clearSearchText();
   getMoviesList();
 };
 
 const handleSearchMovie = (event) => {
   const search_web = document.getElementById("search_text").value;
-  const search_mobile = document.getElementById("search_text_mobile").value
+  const search_mobile = document.getElementById("search_text_mobile").value;
 
-  const search_text = search_web || search_mobile
+  const search_text = search_web || search_mobile;
 
   if (!(event.keyCode === 13) || !search_text) return;
 
-  closeMenu()
+  closeMenu();
 
-  btnSearchMovie.style.display = "flex";
+  handleButtons("btn_search_movie");
   const btnSpan = document.querySelector("#btn_search_movie span");
   btnSpan.innerText = search_text;
-  handleButtons("btn_search_movie");
   searchMovie(search_text);
 };
 
 const searchMovie = async (search_text) => {
   if (!search_text) return;
 
-  loadingScreen.style.display = 'flex'
+  loadingScreen.classList.add("d-flex");
+  loadingScreen.classList.remove("d-none");
 
   const search = await fetch(
     `https://api.themoviedb.org/3/search/movie?query=${search_text}&include_adult=false&language=pt-BR&page=1`,
@@ -308,8 +327,10 @@ const searchMovie = async (search_text) => {
   );
   const response = await search.json();
 
-  loadingScreen.style.display = 'none'
-  buildElementsOnScreen(response.results);
+  buildElementsOnScreen(response.results.slice(0, 12));
+
+  loadingScreen.classList.add("d-none");
+  loadingScreen.classList.remove("d-flex");
 };
 
 const handleButtons = (selected) => {
@@ -317,7 +338,8 @@ const handleButtons = (selected) => {
     button.classList.remove("btn-selected");
   }
   for (let button of specialButtons) {
-    button.style.display = "none";
+    button.classList.remove("d-flex");
+    button.classList.add("d-none");
   }
 
   switch (selected) {
@@ -339,17 +361,17 @@ const handleButtons = (selected) => {
       break;
     case "favorites":
       btnFavorites.classList.add("btn-selected");
-      btnFavorites.style.display = "flex";
+      btnFavorites.classList.add("d-flex");
       clearSearchText();
       break;
     case "must_watch":
       btnMustWatch.classList.add("btn-selected");
-      btnMustWatch.style.display = "flex";
+      btnMustWatch.classList.add("d-flex");
       clearSearchText();
       break;
     case "btn_search_movie":
       btnSearchMovie.classList.add("btn-selected");
-      btnSearchMovie.style.display = "flex";
+      btnSearchMovie.classList.add("d-flex");
       break;
     default:
       break;
@@ -362,15 +384,13 @@ const clearSearchText = () => {
 };
 
 const openMenu = () => {
-  dropdownMenu.classList.remove('d-none')
-  dropdownMenu.classList.add('d-flex')
-}
+  dropdownMenu.classList.remove("d-none");
+  dropdownMenu.classList.add("d-flex");
+};
 
 const closeMenu = () => {
-  dropdownMenu.classList.add('d-none')
-  dropdownMenu.classList.remove('d-flex')
-}
+  dropdownMenu.classList.add("d-none");
+  dropdownMenu.classList.remove("d-flex");
+};
 
 getMoviesList();
-
-// tratar possíveis retornos vazios das listas de favoritos e quero assistir

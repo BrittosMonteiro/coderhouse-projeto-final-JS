@@ -24,6 +24,8 @@
   </head>
   <body>
     <main class="main" id="main">
+
+      <!-- Header principal -->
       <header class="header">
         <p class="user_logged">Olá, visitante</p>
         <div class="form_search" method="GET">
@@ -55,36 +57,38 @@
         </div>
         <i class="ph ph-list" id="menu-icon" style="color: white" onclick="openMenu()"></i>
       </header>
+
+      <!-- Botões de seleção e navegação -->
       <nav class="nav">
         <button
           onclick="getMoviesList('popular')"
-          class="btn-default"
+          class="btn-default d-flex"
           id="popular"
         >
           Populares
         </button>
         <button
           onclick="getMoviesList('top_rated')"
-          class="btn-default"
+          class="btn-default d-flex"
           id="top_rated"
         >
           Melhores avaliados
         </button>
         <button
           onclick="getMoviesList('now_playing')"
-          class="btn-default"
+          class="btn-default d-flex"
           id="now_playing"
         >
           Em cartaz
         </button>
         <button
           onclick="getMoviesList('upcoming')"
-          class="btn-default"
+          class="btn-default d-flex"
           id="upcoming"
         >
           Em breve
         </button>
-        <button class="btn-default btn-selected" id="favorites">
+        <button class="btn-default btn-selected d-none" id="favorites">
           Favoritos
           <i
             class="ph ph-x"
@@ -92,7 +96,7 @@
             onclick="restart()"
           ></i>
         </button>
-        <button class="btn-default btn-selected" id="must_watch">
+        <button class="btn-default btn-selected d-none" id="must_watch">
           Quero assistir
           <i
             class="ph ph-x"
@@ -109,6 +113,8 @@
           ></i>
         </button>
       </nav>
+
+      <!-- Exibição das informações do filme selecionado - visível apenas em desktop/telas maiores -->
       <section class="movie_about">
         <h1 class="movie_about__title"></h1>
         <p class="movie_about__description"></p>
@@ -148,13 +154,23 @@
           ></i>
         </button>
       </section>
+
+      <!-- Exibição dos filmes nas listas selecionadas -->
       <section class="movie_list"></section>
+
+      <p class="no-data d-none">Não encontramos nada por aqui :/</p>
+
+      <!-- Footer -->
       <footer class="footer">
         <p>Projeto Final Javascript - Desenvolvido por Lucas Brittos</p>
       </footer>
+
+      <!-- Tela de loading - visível a cada requisição -->
       <div class="loading">
         <div class="spinner"></div>
       </div>
+
+      <!-- Menu dropdown - visível apenas em mobile/telas menores -->
       <div class="dropdown d-none" id="dropdown__menu">
         <i
           class="ph ph-x dropdown__close"
