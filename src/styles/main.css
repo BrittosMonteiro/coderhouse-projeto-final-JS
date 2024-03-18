@@ -21,7 +21,7 @@ body,
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   gap: 40px;
 }
 
@@ -80,10 +80,20 @@ body,
   gap: 16px;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1280px;
+  gap: 40px;
+  margin: 0 auto;
+  padding: 0 16px;
+  height: 100%;
+}
+
 .nav {
   display: flex;
   flex-wrap: wrap;
-  max-width: 1280px;
   margin: 0 auto;
   align-items: center;
   justify-content: start;
@@ -106,9 +116,8 @@ body,
 
 .movie_about {
   display: none;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
-  max-width: 1280px;
   margin: 0 auto;
   padding: 16px;
   align-items: flex-start;
@@ -136,7 +145,6 @@ body,
   padding: 0 16px;
   gap: 16px;
   align-items: center;
-  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -247,7 +255,6 @@ hr {
 .no-data {
   flex-direction: row;
   width: 100%;
-  max-width: 1280px;
   margin: 0 auto;
   color: #f4f8fc;
   text-align: center;
@@ -291,7 +298,7 @@ hr {
 
 @media screen and (min-width: 1024px) {
   .movie_list {
-    justify-content: start;
+    justify-content: space-between;
   }
 
   .movie {
@@ -314,5 +321,15 @@ hr {
 
   .movie_about {
     display: flex;
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .content {
+    padding: initial;
+  }
+  .movie_list {
+    justify-content: start;
   }
 }
