@@ -276,14 +276,19 @@ const handleFavoritesOrMustWatchMovies = async (type) => {
 };
 
 const restart = () => {
-  document.getElementById("search_text").value = null;
+  clearSearchText()
   getMoviesList();
 };
 
 const handleSearchMovie = (event) => {
-  const search_text = document.getElementById("search_text").value;
+  const search_web = document.getElementById("search_text").value;
+  const search_mobile = document.getElementById("search_text_mobile").value
+
+  const search_text = search_web || search_mobile
 
   if (!(event.keyCode === 13) || !search_text) return;
+
+  closeMenu()
 
   btnSearchMovie.style.display = "flex";
   const btnSpan = document.querySelector("#btn_search_movie span");
@@ -353,6 +358,7 @@ const handleButtons = (selected) => {
 
 const clearSearchText = () => {
   document.getElementById("search_text").value = null;
+  document.getElementById("search_text_mobile").value = null;
 };
 
 const openMenu = () => {
@@ -368,4 +374,3 @@ const closeMenu = () => {
 getMoviesList();
 
 // tratar possíveis retornos vazios das listas de favoritos e quero assistir
-// menu suspenso (dropdownMenu) para mobile: busca
