@@ -187,6 +187,14 @@ const selectedMovie = (id, backdrop, title, overview) => {
 };
 
 const addToFavorites = (id = movie_id) => {
+  Toastify({
+    text: "Adicionado aos favoritos",
+    className: "info",
+    style: {
+      background: "linear-gradient(to right, #00b09b, #96c93d)",
+    }
+  }).showToast();
+
   favoritesList.push(id);
   localStorage.setItem("favoritesList", JSON.stringify(favoritesList));
   toggleButtons(id);
@@ -196,12 +204,27 @@ const removeFromFavorites = (id = movie_id) => {
   const pos = favoritesList.indexOf(id);
   if (pos == -1) return;
 
+  Toastify({
+    text: "Removido dos favoritos",
+    className: "info",
+    style: {
+      background: "red",
+    }
+  }).showToast();
+
   favoritesList = favoritesList.splice(1, pos);
   localStorage.setItem("favoritesList", JSON.stringify(favoritesList));
   toggleButtons(id);
 };
 
 const addToMustWatch = (id = movie_id) => {
+  Toastify({
+    text: "Adicionado à lista para assistir",
+    className: "info",
+    style: {
+      background: "linear-gradient(to right, #00b09b, #96c93d)",
+    }
+  }).showToast();
   mustWatchList.push(id);
   localStorage.setItem("mustWatchList", JSON.stringify(mustWatchList));
   toggleButtons(id);
@@ -210,6 +233,14 @@ const addToMustWatch = (id = movie_id) => {
 const removeFromMustWatch = (id = movie_id) => {
   const pos = mustWatchList.indexOf(id);
   if (pos == -1) return;
+
+  Toastify({
+    text: "Removido da lista para assistir",
+    className: "info",
+    style: {
+      background: "red",
+    }
+  }).showToast();
 
   mustWatchList = mustWatchList.splice(1, pos);
   localStorage.setItem("mustWatchList", JSON.stringify(mustWatchList));
